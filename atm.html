@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ATM Machine</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #e6f2ff;
+            text-align: center;
+        }
+        .atm-box {
+            width: 350px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            width: 150px;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            width: 80%;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="atm-box">
+
+    <h2>ATM Machine</h2>
+
+    <!-- Card Insert -->
+    <div id="cardSection">
+        <button onclick="insertCard()">Insert Card</button>
+    </div>
+
+    <!-- PIN Section -->
+    <div id="pinSection" style="display:none;">
+        <p>Enter PIN:</p>
+        <input type="password" id="pin">
+        <br>
+        <button onclick="validatePIN()">Submit</button>
+        <p id="pinMsg"></p>
+    </div>
+
+    <!-- Menu -->
+    <div id="menuSection" style="display:none;">
+        <h3>Select Transaction</h3>
+        <button onclick="showWithdraw()">Withdraw</button><br>
+        <button onclick="showDeposit()">Deposit</button><br>
+        <button onclick="balance()">Balance</button><br>
+        <button onclick="transfer()">Transfer</button><br>
+        <button onclick="exit()">Exit</button>
+    </div>
+
+    <!-- Transaction Section -->
+    <div id="transactionSection" style="display:none;">
+        <p id="actionText"></p>
+        <input type="number" id="amount" placeholder="Enter amount">
+        <br>
+        <button onclick="process()">Submit</button>
+    </div>
+
+    <p id="result"></p>
+
+</div>
+
+<script>
+
+let correctPIN = "1234";
+let attempts = 0;
+let balanceAmount = 5000;
+let currentAction = "";
+
+// Insert card
+function insertCard() {
+    document.getElementById("cardSection").style.display = "none";
+    document.getElementById("pinSection").style.display = "block";
+}
+
+// Validate PIN
+function validatePIN() {
+    let pin = document.getElementById("pin").value;
+
+    if (pin === correctPIN) {
+        document.getElementById("pinSection").style.display = "none";
+        document.getElementById("menuSection").style.display = "block";
+    } else {
+        attempts++;
+        document.getElementById("pinMsg").innerText = "Wrong PIN!";
+        
+        if (attempts >= 3) {
+            alert("Card Retained!");
+            location.reload();
+        }
+    }
+}
+
+// Show Withdraw
+function showWithdraw() {
+    currentAction = "withdraw";
+    document.getElementById("menuSection").style.display = "none";
+    document.getElementById("transactionSection").style.display = "block";
+    document.getElementById("actionText").innerText = "Enter amount to withdraw";
+}
+
+// Show Deposit
+function showDeposit() {
+    currentAction = "deposit";
+    document.getElementById("menuSection").style.display = "none";
+    document.getElementById("transactionSection").style.display = "block";
+    document.getElementById("actionText").innerText = "Enter amount to deposit";
+}
+
+// Balance
+function balance() {
+    document.getElementById("result").innerText = "Balance: ₹" + balanceAmount;
+}
+
+// Transfer
+function transfer() {
+    alert("Transfer Successful (Demo)");
+}
+
+// Process transaction
+function process() {
+    let amount = parseInt(document.getElementById("amount").value);
+
+    if (amount % 100 !== 0) {
+        alert("Amount must be multiple of 100");
+        return;
+    }
+
+    if (currentAction === "withdraw") {
+        if (amount <= balanceAmount) {
+            balanceAmount -= amount;
+            alert("Withdraw Successful");
+        } else {
+            alert("Insufficient Balance");
+        }
+    }
+
+    if (currentAction === "deposit") {
+        balanceAmount += amount;
+        alert("Deposit Successful");
+    }
+
+    document.getElementById("transactionSection").style.display = "none";
+    document.getElementById("menuSection").style.display = "block";
+}
+
+// Exit
+function exit() {
+    alert("Thank You!");
+    location.reload();
+}
+
+</script>
+
+</body>
+</html>
