@@ -1,0 +1,31 @@
+image: alpine
+
+stages:
+  - build
+  - test
+  - deploy
+
+build-job:
+  stage: build
+  script:
+    - echo "Installing dependencies"
+    - echo "Building project"
+
+test-job:
+  stage: test
+  script:
+    - echo "Running tests"
+
+pages:
+  stage: deploy
+  script:
+    - mkdir public
+    - cp index.html public/
+    - cp dashboard.html public/ || true
+    - cp style.css public/ || true
+    - cp script.js public/ || true
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
