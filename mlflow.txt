@@ -1,0 +1,11 @@
+py -m pip install mlflow  (if it is not done)
+
+py -m pip install --upgrade pip
+
+py -m pip install mlflow
+
+py -m mlflow --version (to check )
+
+py -m mlflow ui  (to run mlflow)
+
+py -m pip install mlflow scikit-learn pandas
